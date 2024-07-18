@@ -10,6 +10,7 @@ def main():
     header = getHeader()
     video_url, audio_url, title = getData(url=url, header=header)
     download(video_url=video_url, audio_url=audio_url, title=title, header=header)
+    handlefile(title=title)
 
 
 def getHeader():
@@ -57,6 +58,17 @@ def download(video_url, audio_url, title, header):
 
     with open("./data/" + title[0] + "_audio.mp4", "wb") as f:
         f.write(audio.content)
+
+
+def handlefile(title):
+    if not os.path.exists("./out"):
+        os.mkdir("./out")
+
+    cmd = (
+        'ffmpeg -i "./data/%s_video.mp4" -i "./data/%s_audio.mp4" -c copy "./out/%s.mp4"'
+        % (title[0], title[0], title[0])
+    )
+    os.popen(cmd=cmd)
 
 
 if __name__ == "__main__":
