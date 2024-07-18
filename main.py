@@ -9,8 +9,9 @@ def main():
     url = getUrl()
     header = getHeader()
     video_url, audio_url, title = getData(url=url, header=header)
-    download(video_url=video_url, audio_url=audio_url, title=title, header=header)
-    handlefile(title=title)
+    title_re = titlehandle(title=title[0])
+    download(video_url=video_url, audio_url=audio_url, title=title_re, header=header)
+    handlefile(title=title_re)
 
 
 def getHeader():
@@ -53,10 +54,10 @@ def download(video_url, audio_url, title, header):
     if not os.path.exists("./data"):
         os.mkdir("./data")
 
-    with open("./data/" + title[0] + "_video.mp4", "wb") as f:
+    with open("./data/" + title + "_video.mp4", "wb") as f:
         f.write(video.content)
 
-    with open("./data/" + title[0] + "_audio.mp4", "wb") as f:
+    with open("./data/" + title + "_audio.mp4", "wb") as f:
         f.write(audio.content)
 
 
@@ -65,10 +66,17 @@ def handlefile(title):
         os.mkdir("./out")
 
     cmd = (
-        'ffmpeg -i "./data/%s_video.mp4" -i "./data/%s_audio.mp4" -c copy "./out/%s.mp4"'
-        % (title[0], title[0], title[0])
+        'ffmpeg -i "./data/%s_video.mp4" -i "./data/%s_audio.mp4" -c copy -y "./out/%s.mp4"'
+        % (title, title, title)
     )
     os.popen(cmd=cmd)
+
+
+def titlehandle(title):
+    chars = ["\\", "/", "*", "<", ">", "?", ":", '"']
+    for i in chars:
+        title = title.replace(i, "&")
+    return title
 
 
 if __name__ == "__main__":
