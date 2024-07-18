@@ -7,18 +7,23 @@ from bs4 import BeautifulSoup
 
 def main():
     url = getUrl()
-    header = getHeader(url=url)
+    header = getHeader()
     video_url, audio_url, title = getData(url=url, header=header)
     download(video_url=video_url, audio_url=audio_url, title=title, header=header)
 
 
-def getHeader(url):
+def getHeader():
     header = {
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-        "cookie": "buvid3=18D2110A-F1CF-6FCE-F0B0-AF9FF4FDB7A340856infoc; b_nut=1721199440; CURRENT_FNVAL=4048; bsource=search_google; _uuid=6AB5972E-10CCA-BDFF-C2D4-C1791BE10185738579infoc; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjE0NTg2NDEsImlhdCI6MTcyMTE5OTM4MSwicGx0IjotMX0.PNsqpilG9sy5pJ4_mgMY0NQOAC5CzyOgdgqEpyO4lnU; bili_ticket_expires=1721458581; rpdid=|(kmJ))YJ|kJ0J'u~kuummRRk; SESSDATA=9f7898d9%2C1736751523%2Cb2561%2A71CjDG-s0gcl0M8nN0G4yx6wR7FLHBnaheid0T6TZujayjS89MG4NmmOt0ElOA1GrtapESVkJZTk1CNXk2Y01jRlNRQlpTSldEZUJpMGRmbDgxV2YyNnVRZm1td2lWRTRjaWNnbFdZYnVES3RMUVlGLWZBckNqOHVmMUNzTkdxNUN3WWdzeURqZ2pnIIEC; bili_jct=0ef0853e5e28b21b777362df6255238c; DedeUserID=363210839; DedeUserID__ckMd5=2b22cf0cf3c2e569; sid=63r4oah0; hit-dyn-v2=1; buvid4=731D40A3-2C52-0D41-0366-7671A76FE6FA35074-023090723-bevVgi1zYcBrN6qICkw4eA%3D%3D; fingerprint=8df36ecd52b746a8b5b1ace7c5dc1794; buvid_fp_plain=undefined; buvid_fp=8df36ecd52b746a8b5b1ace7c5dc1794; b_lsid=5D4F7A9F_190C0525B5E; bp_t_offset_363210839=955099150653849600",
-        "referer": url,
+        "cookie": "",
+        "referer": "https://www.bilibili.com/",
     }
+    if not os.path.exists("profile.json"):
+        open("profile.json", "w", encoding="utf-8").write(json.dumps(header))
 
+    with open("profile.json", "r", encoding="utf-8") as f:
+        profile = json.loads(str(f.read()))
+        header = profile
     return header
 
 
