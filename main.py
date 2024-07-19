@@ -43,6 +43,16 @@ def getData(url, header):
 
 
 def getUrl():
+    print(
+        """
+ _     _ _ _     _                     _                 _ 
+| |__ (_) (_) __| | _____      ___ __ | | ___   __ _  __| |
+| '_ \| | | |/ _` |/ _ \ \ /\ / / '_ \| |/ _ \ / _` |/ _` |
+| |_) | | | | (_| | (_) \ V  V /| | | | | (_) | (_| | (_| |
+|_.__/|_|_|_|\__,_|\___/ \_/\_/ |_| |_|_|\___/ \__,_|\__,_|
+===========================================================                                                           
+"""
+    )
     url = input("bilibili Url:")
     return url
 
@@ -69,15 +79,17 @@ def handlefile(title):
         'ffmpeg -i "./data/%s_video.mp4" -i "./data/%s_audio.mp4" -c copy -y "./out/%s.mp4"'
         % (title, title, title)
     )
-    os.popen(cmd=cmd)
+    res = os.popen(cmd=cmd)
+    print(res.read())
 
 
 def titlehandle(title):
-    chars = ["\\", "/", "*", "<", ">", "?", ":", '"']
+    chars = ["\\", "/", "*", "<", ">", "?", ":", '"', "|"]
     for i in chars:
         title = title.replace(i, "&")
     return title
 
 
 if __name__ == "__main__":
-    main()
+    while 1:
+        main()
